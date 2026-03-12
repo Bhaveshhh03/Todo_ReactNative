@@ -62,9 +62,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     elevation: 3,
   },
-
-
-
   title: {
     flex: 1,
     fontSize: 16,

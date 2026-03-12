@@ -4,7 +4,6 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
@@ -12,7 +11,6 @@ import TodoCard from '../components/TodoCard';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import { create } from 'react-native/types_generated/Libraries/ReactNative/ReactFabricPublicInstance/ReactNativeAttributePayload';
 import { useDispatch, useSelector } from 'react-redux';
 import ConfirmModal from '../components/ConfirmModal';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -28,7 +26,6 @@ const TodoItems = () => {
   const [totalCompletedTask, settotalCompletedTask] = useState(null); // total completed task count state;
   const [sort, setsort] = useState(null); // state for sorting the task
   const [filter, setfilter] = useState(null); // state for filtering the task
-  const [filteredTodos, setfilteredTodos] = useState([]);
 
   //Sort Options
   const sortOptions = [
@@ -61,27 +58,27 @@ const TodoItems = () => {
   };
 
   const filteredAndSortedTodos = [...todos]
-  .filter(item => {
-    if (filter === 'Active') return !item.completed;
-    if (filter === 'Done') return item.completed;
-    return true;
-  })
-  .sort((a, b) => {
-    if (sort === 'recent') {
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    }
-    if (sort === 'id') {
-      return a.id - b.id;
-    }
-    return 0;
-  });
-  const TaskCompleteCount = filteredAndSortedTodos?.filter(item => item.completed).length; // Count of completed tasks
-  console.log("Filtered and Sorted Todos:", filteredAndSortedTodos); // Debug log to check filtered and sorted todos
+    .filter(item => {
+      if (filter === 'Active') return !item.completed;
+      if (filter === 'Done') return item.completed;
+      return true;
+    })
+    .sort((a, b) => {
+      if (sort === 'recent') {
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      }
+      if (sort === 'id') {
+        return a.id - b.id;
+      }
+      return 0;
+    });
+  const TaskCompleteCount = filteredAndSortedTodos?.filter(
+    item => item.completed,
+  ).length; // Count of completed tasks
   useEffect(() => {
     settotalTask(filteredAndSortedTodos.length);
     settotalCompletedTask(TaskCompleteCount);
   }, [filteredAndSortedTodos]);
-
 
   useEffect(() => {
     fetchTodos();
@@ -157,7 +154,7 @@ const TodoItems = () => {
           />
         </View>
       </View>
-
+      {/* Todo list */}
       {loading ? (
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
