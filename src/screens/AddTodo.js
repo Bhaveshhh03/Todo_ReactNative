@@ -13,8 +13,11 @@ const AddTodo = ({ navigation, route }) => {
   const { todoData } = route.params || {}; // Get the todo item if passed for editing from main screen
   const dispatch = useDispatch();
   const [task, setTask] = useState(todoData ? todoData.title : ""); // Initialize with existing title if editing
-console.log("Todo data in AddTodo screen:", todoData); // Debug log to check received data
   const handleAdd = () => {
+  if (task.trim() === "") {
+    alert("Please enter a task.");
+    return;
+  }
     const data = {
       id: Date.now(), // Using timestamp as a simple unique ID
       title: task,
@@ -44,7 +47,9 @@ console.log("Todo data in AddTodo screen:", todoData); // Debug log to check rec
           <Icon name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
 
-        <Text style={styles.headerTitle}>Add Todo</Text>
+        <View style={{width:100}}>
+          <Text style={styles.headerTitle}>{todoData ? "Edit Todo" : "Add Todo"}</Text>
+        </View>
 
         <View style={{ width: 24 }} />
       </View>
@@ -53,6 +58,7 @@ console.log("Todo data in AddTodo screen:", todoData); // Debug log to check rec
       <View style={styles.content}>
         <TextInput
           placeholder="Enter your task..."
+          placeholderTextColor={'#525151'}
           value={task}
           onChangeText={setTask}
           style={styles.input}
